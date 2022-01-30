@@ -3,8 +3,7 @@ package ru.netology.manager;
 import ru.netology.domain.Issue;
 import ru.netology.repository.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class IssueManager {
@@ -14,8 +13,12 @@ public class IssueManager {
         this.repo = repo;
     }
 
-    public void addIssue(Issue issue) {
-        repo.add(issue);
+    public void add(Issue issue) {
+        repo.save(issue);
+    }
+
+    public List<Issue> findAll() {
+        return repo.getAll();
     }
 
     public List<Issue> findOpen() {
@@ -49,15 +52,62 @@ public class IssueManager {
         }
     }
 
-//    public List<Issue> filterBy(String author, Predicate<String> filter){
-//        filter = new Filter();
-//        List<Issue> result = new ArrayList<>();
-//        for(Issue issue : repo.getAll()){
-//            if (filter.test(author)
-//        }
-//
-//        return result;
-//
-//
-//    }
+    public List<Issue> sortByTimeOldest(Comparator<Issue> comparator) {
+        List<Issue> result = repo.getAll();
+        comparator = new IssueComparatorByTime();
+        result.sort(comparator);
+        return result;
+
+    }
+
+    public List<Issue> sortByTimeNewest(Comparator<Issue> comparator) {
+        List<Issue> result = repo.getAll();
+        comparator = new IssueComparatorByTime();
+        result.sort(comparator.reversed());
+        return result;
+
+    }
+
+    public List<Issue> sortByLeastCommented(Comparator<Issue> comparator) {
+        List<Issue> result = repo.getAll();
+        result.sort(new IssueComparatorByComment());
+        return result;
+    }
+
+    public List<Issue> sortByMostCommented(Comparator<Issue> comparator) {
+        List<Issue> result = repo.getAll();
+        result.sort(new IssueComparatorByComment().reversed());
+        return result;
+    }
+
+    public List<Issue> filterByAuthor(String author) {
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : repo.getAll()) {
+            if (issue.getAuthor().contains(author)) {
+                result.add(issue);
+            }
+        }
+        return result;
+    }
+
+    public List<Issue> filterByLabel(String label) {
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : repo.getAll()) {
+            if (issue.getLabel().contains(label)) {
+                result.add(issue);
+            }
+        }
+        return result;
+    }
+
+    public List<Issue> filterByAssignee(String assignee) {
+        List<Issue> result = new ArrayList<>();
+        for (Issue issue : repo.getAll()) {
+            if (issue.getAssignee().contains(assignee)) {
+                result.add(issue);
+            }
+        }
+        return result;
+    }
+
 }
