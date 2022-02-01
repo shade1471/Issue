@@ -8,7 +8,7 @@ public class IssueComparatorByComment implements Comparator<Issue> {
 
     @Override
     public int compare(Issue o1, Issue o2) {
-        return o1.getComments().size() - o2.getComments().size();
+        return o1.getComment().size() - o2.getComment().size();
     }
 
     @Override

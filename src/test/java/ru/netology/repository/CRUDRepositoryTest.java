@@ -9,8 +9,10 @@ import ru.netology.manager.IssueComparatorByComment;
 import ru.netology.manager.IssueComparatorByTime;
 import ru.netology.manager.IssueManager;
 
+
 import java.util.List;
 import java.util.Set;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,7 +107,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void getByIdIfExist() {
+        void shouldGetByIdIfExist() {
             Issue expected = one;
             Issue actual = repo.getById(1);
 
@@ -119,7 +121,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void filterByAuthorIfExist() {
+        void shouldFilterByAuthorIfExist() {
             List expected = List.of(one);
             List actual = manager.filterByAuthor("shade1471");
 
@@ -127,7 +129,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void filterByAuthorIfNotExist() {
+        void shouldFilterByAuthorIfNotExist() {
             List expected = List.of();
             List actual = manager.filterByAuthor("Andrey");
 
@@ -156,6 +158,21 @@ public class CRUDRepositoryTest {
         }
 
         @Test
+        void shouldGetByIdIfExist() {
+            Issue expected = three;
+            Issue actual = repo.getById(3);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void shouldGetByIdIfNotExist() {
+            Issue actual = repo.getById(5);
+
+            assertEquals(null, actual);
+        }
+
+        @Test
         void shouldFindAll() {
             List expected = List.of(one, two, three, four);
             List actual = manager.findAll();
@@ -172,7 +189,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void sortedByCreationTimeNewest() {
+        void shouldSortByCreationTimeNewest() {
             List expected = List.of(four, three, two, one);
             List actual = manager.sortByTimeNewest(new IssueComparatorByTime());
 
@@ -180,7 +197,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void sortByFewerComments() {
+        void shouldSortByFewerComments() {
             List expected = List.of(two, three, one, four);
             List actual = manager.sortByLeastCommented(new IssueComparatorByComment());
 
@@ -188,7 +205,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void sortByMostComments() {
+        void shouldSortByMostComments() {
             List expected = List.of(one, four, three, two);
             List actual = manager.sortByMostCommented(new IssueComparatorByComment());
 
@@ -196,7 +213,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void filterByAuthor() {
+        void ShouldFilterByAuthor() {
             List expected = List.of(three, four);
             List actual = manager.filterByAuthor("Andrey");
 
@@ -204,7 +221,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void filterByLabel() {
+        void shouldFilterByLabel() {
             List expected = List.of(one, four);
             List actual = manager.filterByLabel("help");
 
@@ -212,7 +229,7 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void filterByAssignee() {
+        void shouldFilterByAssignee() {
             List expected = List.of(one, two);
             List actual = manager.filterByAssignee("admin");
 

@@ -57,7 +57,6 @@ public class IssueManager {
         comparator = new IssueComparatorByTime();
         result.sort(comparator);
         return result;
-
     }
 
     public List<Issue> sortByTimeNewest(Comparator<Issue> comparator) {
@@ -65,7 +64,6 @@ public class IssueManager {
         comparator = new IssueComparatorByTime();
         result.sort(comparator.reversed());
         return result;
-
     }
 
     public List<Issue> sortByLeastCommented(Comparator<Issue> comparator) {
@@ -109,5 +107,4 @@ public class IssueManager {
         }
         return result;
     }
-
 }
