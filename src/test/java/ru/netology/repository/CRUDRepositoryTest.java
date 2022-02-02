@@ -213,9 +213,17 @@ public class CRUDRepositoryTest {
         }
 
         @Test
-        void ShouldFilterByAuthor() {
+        void ShouldFilterByAuthorWithIgnoreCase() {
             List expected = List.of(three, four);
-            List actual = manager.filterByAuthor("Andrey");
+            List actual = manager.filterByAuthor("ANDREY");
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void ShouldFilterByAuthorIfNotExist() {
+            List expected = List.of();
+            List actual = manager.filterByAuthor("mark");
 
             assertEquals(expected, actual);
         }

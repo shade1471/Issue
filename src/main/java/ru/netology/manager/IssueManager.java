@@ -21,26 +21,22 @@ public class IssueManager {
         return repo.getAll();
     }
 
-    public List<Issue> findOpen() {
+    private List<Issue> filterBy(Predicate<Issue> filter) {
         List<Issue> result = new ArrayList<>();
-        List<Issue> issues = repo.getAll();
-        for (Issue issue : issues) {
-            if (issue.isOpened()) {
+        for (Issue issue : repo.getAll()) {
+            if (filter.test(issue)) {
                 result.add(issue);
             }
         }
         return result;
     }
 
+    public List<Issue> findOpen() {
+        return filterBy(i -> i.isOpened() == true);
+    }
+
     public List<Issue> findClosed() {
-        List<Issue> result = new ArrayList<>();
-        List<Issue> issues = repo.getAll();
-        for (Issue issue : issues) {
-            if (issue.isOpened() == false) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return filterBy(i -> i.isOpened() == false);
     }
 
     public void update(int id) {
@@ -54,15 +50,13 @@ public class IssueManager {
 
     public List<Issue> sortByTimeOldest(Comparator<Issue> comparator) {
         List<Issue> result = repo.getAll();
-        comparator = new IssueComparatorByTime();
-        result.sort(comparator);
+        result.sort(new IssueComparatorByTime());
         return result;
     }
 
     public List<Issue> sortByTimeNewest(Comparator<Issue> comparator) {
         List<Issue> result = repo.getAll();
-        comparator = new IssueComparatorByTime();
-        result.sort(comparator.reversed());
+        result.sort(new IssueComparatorByTime().reversed());
         return result;
     }
 
@@ -79,32 +73,14 @@ public class IssueManager {
     }
 
     public List<Issue> filterByAuthor(String author) {
-        List<Issue> result = new ArrayList<>();
-        for (Issue issue : repo.getAll()) {
-            if (issue.getAuthor().contains(author)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return filterBy(i -> i.getAuthor().equalsIgnoreCase(author));
     }
 
     public List<Issue> filterByLabel(String label) {
-        List<Issue> result = new ArrayList<>();
-        for (Issue issue : repo.getAll()) {
-            if (issue.getLabel().contains(label)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return filterBy(i -> i.getLabel().contains(label));
     }
 
     public List<Issue> filterByAssignee(String assignee) {
-        List<Issue> result = new ArrayList<>();
-        for (Issue issue : repo.getAll()) {
-            if (issue.getAssignee().contains(assignee)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return filterBy(i -> i.getAssignee().contains(assignee));
     }
 }
